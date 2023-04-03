@@ -1,0 +1,151 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>Weather App - Easy Tutorials</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        
+        <div class="card">
+                <div class="search">
+                    <input type= "text" placeholder="Enter city name" spellcheck="false">
+                    <button>
+                        <img src="images/search.png" alt="">
+                    </button>
+
+                </div>
+
+                <div class="error">
+                    <p>Invalied city name</p>
+                </div>
+
+                <div class="weather">
+                    <img src="images/rain.png" class="weather-icon" alt="weather-icon">
+                    <h1 class="temp">27°C</h1>
+                    <h2 class="city">New York</h2>
+
+                    <div class="details">
+                        <div class="col">
+                            <img src="images/humidity.png" >
+                            <div>
+                                <p class="humidity">50%</p>
+                                <p>Humidity</p>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <img src="images/wind.png" >
+                            <div>
+                                <p class="wind">15 km/h</p>
+                                <p>Wind Speed</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+        </div>
+
+        <script>
+            const apiKey = "866b3eb4314d2ad7d3291a994b84f002";
+            const apiUrl =" https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+            const searchBox = document.querySelector(".search input");
+            const searchBtn = document.querySelector(".search button");
+            const weatherIcon = document.querySelector(".weather-icon");
+            const bgImg = document.querySelector(".card");
+
+
+
+            async function checkWeather(city){
+                const response = await fetch (apiUrl + city  + `&appid=${apiKey}`);
+
+                if(response.status == 404){
+                    document.querySelector(".error").style.display = "block";
+                    document.querySelector(".weather").style.display = "none";
+                }else {
+                    var data = await response.json();
+
+                
+                document.querySelector(".city").innerHTML =data.name;
+                document.querySelector(".temp").innerHTML =Math.round(data.main.temp) + "°C";
+                document.querySelector(".humidity").innerHTML =data.main.humidity + "%";
+                document.querySelector(".wind").innerHTML =data.wind.speed + "km/h";
+
+
+
+                const bgImagesCl = [  'images/b4.jpg',  'images/w5.jpg',  'images/w16.jpg'];
+                const bgImagesClear = [  'images/w10.jpg',  'images/w15.jpg',  'images/w3.jpg'];
+                const bgImagesR = [  'images/r1.jpg',  'images/r2.jpg',  'images/r3.jpg'];
+                const bgImagesD = [  'images/w12.jpg',  'images/w18.jpg',  'images/w11.jpg'];
+                const bgImagesM = [  'images/w13.jpg',  'images/w10.jpg',  'images/w8.jpg'];
+
+
+
+                if(data.weather[0].main == "Clouds"){
+                    weatherIcon.src = "images/clouds.png";
+                    // bgImg.style.backgroundImage = "linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.97)), url(images/w17.jpg)";
+                    const randomBgIndex = Math.floor(Math.random() * bgImagesCl.length);
+                    const randomBg = bgImagesCl[randomBgIndex];
+                    bgImg.style.backgroundImage = `linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.9)), url(${randomBg})`;
+
+
+
+
+                }
+                else if(data.weather[0].main == "Clear"){
+                    weatherIcon.src = "images/clear.png";
+                    // bgImg.style.backgroundImage = "linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.95)), url(images/live1.jpg)";
+                    const randomBgIndex = Math.floor(Math.random() * bgImagesClear.length);
+                    const randomBg = bgImagesClear[randomBgIndex];
+                    bgImg.style.backgroundImage = `linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.9)), url(${randomBg})`;
+
+                }
+                else if(data.weather[0].main == "Rain"){
+                    weatherIcon.src = "images/rain.png";
+                    // bgImg.style.backgroundImage = "linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.95)), url(images/r1.jpg)";
+                    const randomBgIndex = Math.floor(Math.random() * bgImagesR.length);
+                    const randomBg = bgImagesR[randomBgIndex];
+                    bgImg.style.backgroundImage = `linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.9)), url(${randomBg})`;
+
+                }
+                else if(data.weather[0].main == "Drizzle"){
+                    weatherIcon.src = "images/drizzle.png";
+                    // bgImg.style.backgroundImage = "linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.95)), url(images/w10.jpg)";
+                    const randomBgIndex = Math.floor(Math.random() * bgImagesD.length);
+                    const randomBg = bgImagesD[randomBgIndex];
+                    bgImg.style.backgroundImage = `linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.9)), url(${randomBg})`;
+
+                }
+                else if(data.weather[0].main == "Mist"){
+                    weatherIcon.src = "images/mist.png";
+                    // bgImg.style.backgroundImage = "linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.95)), url(images/w5.jpg)";
+                    const randomBgIndex = Math.floor(Math.random() * bgImagesM.length);
+                    const randomBg = bgImagesM[randomBgIndex];
+                    bgImg.style.backgroundImage = `linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.9)), url(${randomBg})`;
+
+                }
+
+
+                document.querySelector(".weather").style.display ="block";
+                document.querySelector(".error").style.display = "none";
+
+
+                }
+
+
+                
+
+
+            }
+        
+
+            searchBtn.addEventListener("click" , ()=>{
+                checkWeather(searchBox.value);
+            })
+
+
+            
+        </script>
+
+    </body>
+</html>
